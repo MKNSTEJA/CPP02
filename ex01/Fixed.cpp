@@ -6,12 +6,11 @@
 /*   By: kmummadi <kmummadi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/23 23:52:16 by kmummadi          #+#    #+#             */
-/*   Updated: 2025/05/24 00:42:10 by kmummadi         ###   ########.fr       */
+/*   Updated: 2025/05/24 13:01:17 by kmummadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Fixed.hpp"
-#include <math.h>
 
 // Default constructor
 Fixed::Fixed() : _rawBits(0) { std::cout << "Default constructor called\n"; }
@@ -44,10 +43,19 @@ Fixed &Fixed::operator=(const Fixed &other) {
 Fixed::~Fixed() { std::cout << "Destructor called\n"; }
 
 // Getter function
-int Fixed::getRawBits() const {
-  std::cout << "getRawBits member function called\n";
-  return (_rawBits);
-}
+int Fixed::getRawBits() const { return (_rawBits); }
 
 // Setter function
 void Fixed::setRawBits(int const raw) { this->_rawBits = raw; }
+
+// Helper functions
+float Fixed::toFloat() const {
+  return (static_cast<float>(_rawBits) / (1 << _fractionalBits));
+}
+
+int Fixed::toInt() const { return (_rawBits >> _fractionalBits); }
+
+std::ostream &operator<<(std::ostream &os, const Fixed &num) {
+  os << num.toFloat();
+  return os;
+}
